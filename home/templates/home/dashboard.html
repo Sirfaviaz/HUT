@@ -1,0 +1,112 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="text-center text-primary">Dashboard</h1>
+
+{% if store %}
+<div class="card my-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h2>{{ store.name }}</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Address:</strong> {{ store.address }}</p>
+        <p><strong>Owner:</strong> {{ request.user.username }}</p>
+    </div>
+</div>
+
+{% if messages %}
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="row">
+    <!-- Add New Purchase -->
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Add New Purchase</h5>
+                <p class="card-text">Record a new purchase and update stock.</p>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPurchaseModal">Add Purchase</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Check Stock -->
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Check Stock</h5>
+                <p class="card-text">View and manage current stock levels.</p>
+                <a href="{% url 'view_stock' %}" class="btn btn-primary">Check Stock</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Purchases -->
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Recent Purchases</h5>
+                <p class="card-text">View recent purchases and invoices.</p>
+                <a href="{% url 'recent_purchases' %}" class="btn btn-primary">View Purchases</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="my-5">
+    <h3>Recent Purchases</h3>
+    <ul class="list-group">
+        {% for purchase in recent_purchases %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Invoice {{ purchase.reference }} - {{ purchase.date }}
+            <span class="badge bg-primary rounded-pill">${{ purchase.total_amount }}</span>
+        </li>
+        {% empty %}
+        <li class="list-group-item">No recent purchases found.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="my-5">
+    <h3>Suppliers</h3>
+    <ul class="list-group">
+        {% for supplier in suppliers %}
+        <li class="list-group-item">
+            <strong>{{ supplier.name }}</strong> - {{ supplier.contact_number }}
+        </li>
+        {% empty %}
+        <li class="list-group-item">No suppliers found.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<div class="alert alert-danger text-center" role="alert">
+    No store associated with your account. Please contact admin.
+</div>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="addPurchaseModal" tabindex="-1" aria-labelledby="addPurchaseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPurchaseModalLabel">Add New Purchase</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Would you like to create a new entry or continue an existing one?</p>
+                <div class="d-flex justify-content-around">
+                    <a href="{% url 'new_invoice' %}" class="btn btn-primary">New Entry</a>
+                    <a href="{% url 'existing_entries' %}" class="btn btn-secondary">Continue Existing Entry</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

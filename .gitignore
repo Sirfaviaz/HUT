@@ -1,0 +1,43 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.log
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# Environment Variables
+.env
+
+# Virtual Environments
+venv/
+env/
+*.egg-info/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-Specific
+.DS_Store
+Thumbs.db
+
+# Git Specific
+*.orig
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+
+# Migrations (optional, only if you don't want to track migrations)
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Node.js (if you use npm for frontend)
+node_modules/

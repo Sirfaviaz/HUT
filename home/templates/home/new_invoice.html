@@ -1,0 +1,73 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Create New Invoice{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h1>Create New Invoice</h1>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="supplier" class="form-label">Select Supplier</label>
+                    <div class="d-flex">
+                        <select id="supplier" name="supplier" class="form-select me-2" required>
+                            {% for supplier in suppliers %}
+                            <option value="{{ supplier.id }}">{{ supplier.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
+                            Add New Supplier
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="reference" class="form-label">Invoice Number</label>
+                    <input type="text" id="reference" name="reference" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Create Invoice</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Supplier Modal -->
+<div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{% url 'add_supplier' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSupplierModalLabel">Add New Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="supplier_name" class="form-label">Supplier Name</label>
+                        <input type="text" id="supplier_name" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="supplier_contact" class="form-label">Contact Number</label>
+                        <input type="text" id="supplier_contact" name="contact_number" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="supplier_email" class="form-label">Email</label>
+                        <input type="email" id="supplier_email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="supplier_address" class="form-label">Address</label>
+                        <textarea id="supplier_address" name="address" class="form-control" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Supplier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

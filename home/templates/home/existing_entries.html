@@ -1,0 +1,32 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Unfinished Invoices{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h1>Unfinished Invoices</h1>
+        </div>
+        <div class="card-body">
+            {% if invoices %}
+            <ul class="list-group">
+                {% for invoice in invoices %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">Invoice: {{ invoice.reference }}</h5>
+                        <small class="text-muted">Date: {{ invoice.date }}</small>
+                    </div>
+                    <a href="{% url 'add_product_to_invoice' invoice.id %}" class="btn btn-primary btn-sm">Continue</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="alert alert-warning text-center" role="alert">
+                No unfinished invoices found.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
